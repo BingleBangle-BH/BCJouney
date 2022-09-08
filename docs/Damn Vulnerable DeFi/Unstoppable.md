@@ -9,7 +9,7 @@ In simple terms, flash loan are broken down into 3 steps and to be completed in 
 2) Receiver will use the money to execute a certain action from another smart contract.
 3) Receiver will return the money with fixed rate (Something like an interest rate).
 
-Reference: https://10clouds.com/blog/defi/understanding-flash-loans-in-defi/
+Reference: <https://10clouds.com/blog/defi/understanding-flash-loans-in-defi/>
 
 ## Code Breakdown
 
@@ -24,7 +24,7 @@ There are a few variables declared, one consutructors and two functions in the s
 For starters, this contract mainly use damnValuableToken as their main currency - ```IERC20 public immutable damnValuableToken```.
 Openzeppelin is used to create the token.
 
-Reference: https://docs.openzeppelin.com/contracts/2.x/api/token/erc20#IERC20
+Reference: <https://docs.openzeppelin.com/contracts/2.x/api/token/erc20#IERC20>
 
 ```uint256 public poolBalance``` is created to store a pool token ready to be loaned. 
 
