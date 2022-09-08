@@ -105,7 +105,7 @@ Using that function should result in this.
 |------|------|------|------|
 | 0 ETH | 0 ETH | 10 ETH | 0 ETH |
 
-Now, we'll shift the 10 ETHs from *Attacker Balance Pool* to *Attacker Balance* with a simple transaction which will yield the final result
+Now, we'll shift the 10 ETHs from *Attacker Balance Pool* to *Attacker Balance* with a simple transaction which will yield the final result.
 
 | Lending Pool | Lending Individual Balance | Attacker Balance Pool | Attacker Balance |
 |------|------|------|------|

@@ -142,5 +142,5 @@ it('Exploit', async function () {
 });
 ```
 
-## Reccommendations
+## Recommendations
 Do not allow unidentified users to insert calldata. If need be, always check ```msg.sender``` against a list of whitelisted address.
