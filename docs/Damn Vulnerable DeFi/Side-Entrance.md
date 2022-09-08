@@ -85,6 +85,7 @@ require(address(this).balance >= balanceBefore, "Flash loan hasn't been paid bac
 ```
 
 The result after flashLoan should look like this.
+
 | Lending Pool | Lending Individual Balance | Attacker Balance Pool | Attacker Balance |
 |------|------|------|------|
 | 10 ETH | 10 ETH | 0 ETH | 0 ETH |
@@ -99,11 +100,13 @@ function withdraw() external {
 }
 ```
 Using that function should result in this.
+
 | Lending Pool | Lending Individual Balance | Attacker Balance Pool | Attacker Balance |
 |------|------|------|------|
 | 0 ETH | 0 ETH | 10 ETH | 0 ETH |
 
 Now, we'll shift the 10 ETHs from *Attacker Balance Pool* to *Attacker Balance* with a simple transaction which will yield the final result
+
 | Lending Pool | Lending Individual Balance | Attacker Balance Pool | Attacker Balance |
 |------|------|------|------|
 | 0 ETH | 0 ETH | 0 ETH | 10 ETH |
