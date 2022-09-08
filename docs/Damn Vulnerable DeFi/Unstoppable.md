@@ -84,23 +84,25 @@ I'll breakdown a few requirements quickly.
 ```require(balanceBefore >= borrowAmount, "Not enough tokens in pool");``` = Current amount of tokens in the pool must be more than amount borrowed.
 ```assert(poolBalance == balanceBefore);``` = Current amount of tokens in poolBalance must be the same before the flashloan.
 ```damnValuableToken.transfer(msg.sender, borrowAmount);``` = Token transferred to receiver.
-```IReceiver(msg.sender).receiveTokens(address(damnValuableToken), borrowAmount);``` = Execute function in another contract ***ReceiverUnstoppable.sol***. During this function, tokens loaned to receiver will be returned to pool.
+```IReceiver(msg.sender).receiveTokens(address(damnValuableToken), borrowAmount);``` = Execute function in another contract ***ReceiverUnstoppable.sol***. 
+
+During this function, tokens loaned to receiver will be returned to pool.
 ```require(balanceAfter >= balanceBefore, "Flash loan hasn't been paid back");``` = Amount of tokens after loaned must be more than the amount of tokens before the loan
 
-Critical factors to identify the vulnerability is completed. 
-Pause here if you want to solve it yourself.
-
-## Solution
-
+## Hint
+The goal is to stop the smart contract from functioning. 
 Take a look at this section ```assert(poolBalance == balanceBefore);```.
+
 Technically, there exist 2 pool balance - 1 in ***UnstoppableLender.sol** and ***DamnValuableToken.sol***.
+
 Notice that ***poolBalance*** must be equal to ***balanceBefore***. These are the 2 pool balance
 ***poolBalance*** can only be increased from the function ***depositTokens***.
 ***balanceBefore*** checks for the current tokens in the pool directly from ***DamnValuableToken.sol*** (openzeppelin innate function). 
 Therefore, both variables are async.
 A simple solution is to transfer token directly into ***DamnValuableToken.sol*** to trigger a revert in ```assert(poolBalance == balanceBefore);```.
 
-Here's the solution (I've added 2 functions in ***ReceiverUnstoppable.sol*** to retrieve the number of tokens in the pool)
+## Solution
+Here's the solution (I've added 2 functions in ***ReceiverUnstoppable.sol*** to retrieve the number of tokens in the pool).
 ```
 it('Exploit', async function () {
     /** CODE YOUR EXPLOIT HERE */
