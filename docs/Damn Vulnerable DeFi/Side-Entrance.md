@@ -66,28 +66,51 @@ A lending pool has an address.
 Since it's an address, it have an individual lending balance pool too.
 Let's assign 10 ETH to the lending pool. Notice that the individual Balance pool is 0.
 
-| Lending Pool (address(this).balance) | Individual Balance Pool (balances(address(this))|
-|--------|-------|
-| 10 ETH | 0 ETH |
-
+| Lending Pool | Lending Individual Balance | Attacker Balance Pool | Attacler Balance |
+|------|------|------|------|
+| 10 ETH | 0 ETH | 0 ETH | 0 ETH |
 
 This essentially means ```address(this).balance != balances(address(this))```.
-Here's the loophole, if we transfer 10 ETH to the individual balance pool, the lending pool will still reflect 10 ETH due to the call ```address(this).balance```. 
+Here's the loophole, if we ***deposit*** 10 ETH to the *Lending Individual Balance*, the *Lending Pool* will still reflect 10 ETH as the ETH was not transferred away from the *Lending Pool*. However, the function will add 10 ETH into the hashmap which will increase *Lending Individual Balance* by 10 ETH. Thus, both *Lending Pool* and *Lending Individual Balance* will have 10 ETHs respectively. 
 
-| Lending Pool (address(this).balance) | Individual Balance Pool (balances(address(this))|
-|--------|--------|
-| 10 ETH | 10 ETH |
+```
+function deposit() external payable {
+    balances[msg.sender] += msg.value;
+}
+```
 
-Understanding this concept, we can bypass the final check in the ***flashLoan*** function. 
+Understanding this concept, we can also bypass the final check in the ***flashLoan*** function as ***address(this).balance*** refers to *Lending Pool*.
 ```
 require(address(this).balance >= balanceBefore, "Flash loan hasn't been paid back");        
 ```
 
-We can use the function ***deposit()*** to transfer ETH from the lending pool to the individual balance pool.
-Once the ETH is in the individual balance pool, we can use ***withdraw()*** to extract the token into address wallet. Since the smart contract is using ***Address.sol*** which does not require sender to have any approval, we can send the tokens from the individual balance pool to the attacker
+The result after flashLoan should look like this.
+| Lending Pool | Lending Individual Balance | Attacker Balance Pool | Attacker Balance |
+|------|------|------|------|
+| 10 ETH | 10 ETH | 0 ETH | 0 ETH |
+
+Next, we'll withdraw ETHs with the function ***withdraw()***. The function will remove all ETHs from *Lending Individual Balance* and transfer ETHs from *Lending Pool* to ***msg.sender***. ***msg.sender*** should be coming from *Attacker Balance Pool*.
+Note: You may be thinking, ***Address.sol*** requires 2 parameters for the function ***sendValue*** yet I only see 1. This should clarify any doubts. ```payable(msg.sender).sendValue(amountToWithdraw);``` is the same as ```Address.sendValue(payable(msg.sender), amountToWithdraw);```
+```
+function withdraw() external {
+    uint256 amountToWithdraw = balances[msg.sender];
+    balances[msg.sender] = 0;
+    payable(msg.sender).sendValue(amountToWithdraw);
+}
+```
+Using that function should result in this.
+| Lending Pool | Lending Individual Balance | Attacker Balance Pool | Attacker Balance |
+|------|------|------|------|
+| 0 ETH | 0 ETH | 10 ETH | 0 ETH |
+
+Now, we'll shift the 10 ETHs from *Attacker Balance Pool* to *Attacker Balance* with a simple transaction which will yield the final result
+| Lending Pool | Lending Individual Balance | Attacker Balance Pool | Attacker Balance |
+|------|------|------|------|
+| 0 ETH | 0 ETH | 0 ETH | 10 ETH |
+
 
 ## Solutions
-A new smart contract is created for this solution.
+Following the hints above, your smart contract should look similar to this.
 ```
 // SPDX-License-Identifier: MIT
 
@@ -132,3 +155,5 @@ it('Exploit', async function () {
     await this.attackpool.stealFunds();
 });
 ```
+## Recommendations
+Do not use allow two pools of funds to exist in a single smart contract. Use openzeppelin libraries such as[ERC20](https://docs.openzeppelin.com/contracts/4.x/erc20) to manage the funds.
