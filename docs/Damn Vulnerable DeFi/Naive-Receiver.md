@@ -2,7 +2,7 @@
 
 ## Introduction
 The goal is to drain the user tokens.
-In this section, flash loan from ***NaiveReceiverLenderPool.sol*** impose a fixed interest rate of 1 ether (Holy jesus)
+In this section, flash loan from ***NaiveReceiverLenderPool.sol*** impose a fixed interest rate of 1 ether (Holy jesus).
 Therefore, 1 token will be extracted from the user for every flash loan.
 
 ## Code Breakdown
