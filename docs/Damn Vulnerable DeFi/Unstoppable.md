@@ -89,7 +89,7 @@ I'll breakdown a few requirements quickly.
 During this function, tokens loaned to receiver will be returned to pool.
 ```require(balanceAfter >= balanceBefore, "Flash loan hasn't been paid back");``` = Amount of tokens after loaned must be more than the amount of tokens before the loan
 
-## Hint
+## Hints
 The goal is to stop the smart contract from functioning. 
 Take a look at this section ```assert(poolBalance == balanceBefore);```.
 

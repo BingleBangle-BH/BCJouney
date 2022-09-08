@@ -71,7 +71,7 @@ require(
 );
 ```
 
-## Hint
+## Hints
 This function does not check if the ***msg.sender*** is indeed the borrower.
 ```sol
 function flashLoan(address borrower, uint256 borrowAmount) external nonReentrant

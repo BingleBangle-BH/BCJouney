@@ -10,9 +10,10 @@ Let's start by looking at the variable.
 using Address for address;
 IERC20 public immutable damnValuableToken;
 ```
-Both variables are using openzepplin libraries. There links below shows the function available.
-Reference: https://docs.openzeppelin.com/contracts/3.x/api/utils#Address.
-https://docs.openzeppelin.com/contracts/2.x/api/token/erc20#IERC20.
+Both variables are using openzepplin libraries. Links given below showcase the function available to each cast.
+Reference: <https://docs.openzeppelin.com/contracts/3.x/api/utils#Address>
+
+<https://docs.openzeppelin.com/contracts/2.x/api/token/erc20#IERC20>
 
 Next, an IERC20 token address is called during the constructor
 ```
@@ -50,7 +51,7 @@ require(balanceAfter >= balanceBefore, "Flash loan hasn't been paid back");
 
 Since there are Reentrancy Guard employued in the contract and function, it is not plausible for a reentrancy attack. A direct transfer of token is not an option as well.
 Let's look at the ***target.functionCall(data)***
-Reference: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Address.sol
+Reference: <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Address.sol>
 
 Notice that it calls for ```return functionCallWithValue(target, data, 0, "Address: low-level call failed!");```.
 
@@ -69,8 +70,9 @@ We can call a low level approval that allow the attacker to transfer funds on th
 4) Transfer the tokens on behalf of the contract
 
 Here are reference links to read up
-Reference: https://docs.openzeppelin.com/contracts/2.x/api/token/erc20#IERC20-approve-address-uint256-
-https://docs.openzeppelin.com/contracts/2.x/api/token/erc20#IERC20-transferFrom-address-address-uint256-
+Reference: <https://docs.openzeppelin.com/contracts/2.x/api/token/erc20#IERC20-approve-address-uint256->
+
+<https://docs.openzeppelin.com/contracts/2.x/api/token/erc20#IERC20-transferFrom-address-address-uint256->
 
 ## Solution
 Here's an easy solution. We want to execute a low-level call to authorise our attacker address to transfer tokens in the future. Here's the statement to obtain the call data.
@@ -128,6 +130,16 @@ contract TrusterAttacker is ReentrancyGuard {
 
     }
 }
+```
+
+Here's the call from javascript
+```js
+it('Exploit', async function () {
+    /** CODE YOUR EXPLOIT HERE  */
+    const attackerpool = await ethers.getContractFactory('TrusterAttacker', attacker);
+    this.attack = await attackerpool.deploy(this.pool.address, this.token.address);
+    await this.attack.connect(attacker).drainFunds(TOKENS_IN_POOL);
+});
 ```
 
 ## Reccommendations
