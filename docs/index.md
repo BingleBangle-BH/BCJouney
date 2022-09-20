@@ -11,3 +11,16 @@ Heya! I'm an amateur pentester interested in smart contract security. This is a 
 [[Truster]]
 
 [[Side-Entrance]]
+
+[[The-Rewarder]]
+
+[[Selfie]]
+
+[[Compromised]]
+
+[[Puppet]]
+
+[[Puppet-v2]]
+
+[[Free-rider]]
+
