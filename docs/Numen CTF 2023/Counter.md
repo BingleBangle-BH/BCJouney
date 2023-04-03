@@ -72,7 +72,9 @@ By default, Solidity stores a contract's state variables starting at ***slot0***
 Now that we analysed the functions, here's a breakdown on what we should do.
 
 1) Using solidity opcode, create a set of instruction to store attacker address into ***slot0***.
+
 2) Using the ``create`` function to store the set of instructions into ``Deployer`` contract.
+
 3) Call ``A_delegateccall`` function to execute the set of instructions and change attacker to owner
 
 ## Solutions
@@ -94,12 +96,12 @@ Convert the opcode int EVM binary and you'll get ``0x32600055``
 
 Call the ``create`` function and chuck those binary into it.
 
-|![Create Function](./images/counter_1.png)|
--
+![Create Function](./images/counter_1.png)
+
 
 Once that is complete, send any arbitrary bytes into ``A_delegateccall``.
 
-|![A_delegatecall](./images/counter_2.png)|
--
+![A_delegatecall](./images/counter_2.png)
+
 
 Once that is complete, the attacker will be the owner now.
