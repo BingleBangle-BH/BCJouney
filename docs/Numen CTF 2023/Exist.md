@@ -91,18 +91,29 @@ contract Existing{
 
 ## Environment
 These are the IDEs and langauges used to set up the environment.
+
 - Remix IDE
+
 - VScode
+
 - Python3 
+
 - Ganache-cli
+
 
 ## Setup
 Here's a quick setup 
+
 1) Download ganache-cli with ``yarn global add ganache``
+
 2) Run ganache-cli with ``ganache-cli``
+
 3) Go to remix IDE -> Deploy & Run transaction -> Environment -> Choose 'Dev - Ganache Provider'
+
 4) Create a solidity file -> copy and paste the smart contract 
+
 5) Compile and deploy
+
 6) Start messing around
 
 ## Code Breakdown
