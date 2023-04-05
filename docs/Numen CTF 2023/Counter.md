@@ -75,7 +75,7 @@ Now that we analysed the functions, here's a breakdown on what we should do.
 
 2) Using the ``create`` function to store the set of instructions into ``Deployer`` contract.
 
-3) Call ``A_delegateccall`` function to execute the set of instructions and change attacker to owner
+3) Call ``A_delegatecall`` function to execute the set of instructions and change attacker to owner
 
 ## Solutions
 No attacker contract is required for this challenge. 
