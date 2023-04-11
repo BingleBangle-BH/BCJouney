@@ -3,35 +3,7 @@
 ## Introduction
 The smart contract is rather simple but focuses on how you can store change the owner of the address by using simple assembly opcode.
 
-This is the source code
-```solidity
-pragma solidity ^0.8.13;
-
-contract Deployer {
-    constructor(bytes memory code) { assembly { return (add(code, 0x20), mload(code)) } }
-}
-contract SmartCounter{
-    address public owner;
-    address public target;
-    bool flag=false;
-    constructor(address owner_){
-        owner=owner_;
-    }
-    function create(bytes memory code) public{
-        require(code.length<=24);
-        target=address(new Deployer(code));
-    }
-
-    function A_delegateccall(bytes memory data) public{
-        (bool success,bytes memory returnData)=target.delegatecall(data);
-        require(owner==msg.sender);
-        flag=true;
-    }
-    function isSolved() public view returns(bool){
-        return flag;
-    }
-}
-```
+Here's the source code:  https://github.com/numencyber/NumenCTF_2023/blob/main/counter/contracts/Counter.sol
 
 ## Code Breakdown
 
